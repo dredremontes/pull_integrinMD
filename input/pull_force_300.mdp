@@ -1,0 +1,72 @@
+title       = Constant Force Simulation 
+define      = -DPOSRES_R_A -DPOSRES_R_B ; here we are defining the restraints
+
+; Run parameters
+integrator  = md		; the default leap-frog integrator
+dt          = 0.002		; 2 fs time step
+tinit       = 0			; start at t=0
+nsteps      = 3000000   ; 3000000 = 6 ns 
+nstcomm     = 10		; [steps] frequency for center of mass motion removal
+
+; Output parameters
+nstxout     = 10000     ; 5000 steps = every 40 ps
+nstvout     = 10000 
+nstfout     = 10000		
+nstxtcout   = 2000      ; 1000 steps = every 4 ps
+nstenergy   = 2000
+; Bond parameters
+constraint_algorithm    = lincs		; LINear Constraint Solver
+constraints             = all-bonds	; convert all bonds to constraints
+continuation            = yes       ; continuing from NPT 
+
+; Single-range cutoff scheme
+cutoff-scheme   = Verlet
+nstlist         = 20 
+ns_type         = grid 
+rlist           = 1.4
+rcoulomb        = 1.4
+rvdw            = 1.4
+
+; PME electrostatics parameters
+coulombtype     = PME
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+
+; Berendsen temperature coupling is on in two groups
+Tcoupl      = Nose-Hoover
+tc_grps     = Protein   Non-Protein 
+tau_t       = 1.0       1.0
+ref_t       = 310       310
+
+; Pressure coupling is off for periodic pulling
+Pcoupl      = no
+gen_vel     = no 
+
+; Periodic boundary conditions are on in all directions
+pbc     = xyz
+
+; Long-range dispersion correction
+DispCorr    = EnerPres
+
+; Pull code
+pull                    = yes
+pull-ncoords            = 1         ; only one reaction coordinate 
+pull-ngroups            = 3         ; defining three reaction coordinates
+
+pull_group1_name        = Chain_C	; pulled FN group 
+pull_group2_name		= Chain_A	; fixed alpha group
+pull_group3_name 		= Chain_B   ; fixed beta group
+
+; YOUR CHANGES WILL GO DOWN HERE
+pull_coord1_type        = constant-force        ; Center of mass pulling using a linear potential
+pull_coord1_geometry    = direction-periodic    ; pulls in direction of vector
+pull_coord1_dim         = N Y N		    		; Components printed to the output files
+pull_coord1_vec         = 0 -1 0      	    	; pull along y direction. 
+pull_coord1_groups      = 1 2 					; indices on which the pull coordinate will operate.
+pull_coord1_start       = no       				; no init 
+pull_coord1_k           = -180.7      			; kJ mol-1 nm-1, it is the negative of the constant force

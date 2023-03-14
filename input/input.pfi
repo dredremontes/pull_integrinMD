@@ -1,0 +1,13 @@
+onepair = summed
+group1 = Protein
+group2 = Protein
+atombased = no
+variance = no 
+water = no
+onepair = summed
+residuebased = punctual_stress
+type = Coulomb
+no_end_zeros=yes
+energy_grp_exclusion=yes
+punctualstress=yes
+residuesrenumber=auto

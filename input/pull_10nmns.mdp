@@ -1,0 +1,75 @@
+title       = pull_10nmns
+define      = -DPOSRES_R_A -DPOSRES_R_B
+
+; Run parameters
+integrator  = md
+dt          = 0.002		; 2 fs time step
+tinit       = 0
+nsteps      = 2000000       ; 2000000 = 4 ns = 4000 ps
+nstcomm     = 1000
+
+; Output parameters
+nstxout     = 10000        ; 10000 = every 20 ps
+nstvout     = 10000 
+nstfout     = 10000		
+nstxtcout   = 10000        ; 1000 = every 20 ps
+nstenergy   = 10000
+
+; Bond parameters
+constraint_algorithm    = lincs
+constraints             = h-bonds
+continuation            = yes       ; continuing from NPT 
+
+; Single-range cutoff scheme
+cutoff-scheme   = Verlet
+nstlist         = 20 
+ns_type         = grid 
+rlist           = 1.4
+rcoulomb        = 1.4
+rvdw            = 1.4
+
+; PME electrostatics parameters
+coulombtype     = PME
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+
+; Berendsen temperature coupling is on in two groups
+Tcoupl      = Nose-Hoover
+tc_grps     = Protein   Non-Protein 
+tau_t       = 1.0       1.0
+ref_t       = 310       310
+
+; Pressure coupling is off for periodic pulling
+Pcoupl          = no
+
+; Generate velocities is off
+gen_vel     = no 
+
+; Periodic boundary conditions are on in all directions
+pbc     = xyz
+
+; Long-range dispersion correction
+DispCorr    = EnerPres
+
+; Pull code
+pull                    = yes
+pull-ncoords            = 1         ; only one reaction coordinate 
+pull-ngroups            = 3         ; defining three reaction coordinates
+
+pull_group1_name        = fn	 ; pulled FN group 
+pull_group2_name		= int_a	 ; fixed alpha group
+pull_group3_name 		= int_b  ; fixed beta group
+
+pull_coord1_type        = umbrella      ; harmonic potential
+pull_coord1_geometry    = direction-periodic      ; periodic distance increase
+pull_coord1_dim         = N Y N		    ; Components printed to the output files
+pull_coord1_vec         = 0 -1 0      ; pull along -y direction
+pull_coord1_groups      = 1 2
+pull_coord1_start       = yes       ; define initial COM distance > 0
+pull_coord1_rate        = 0.010      ; 0.01 nm per ps = 10 nm per ns, 0.002 nm per ps = 2 nm per ns
+pull_coord1_k           = 50      	; kJ mol^-1 nm^-2
