@@ -1,9 +1,11 @@
 # pull_integrinMD
 Steered molecular dynamics simulation of alpha5beta1 integrin and fibronectin
+==========
+This is an instruction manual for running steered molecular dynamics simulations of alpha5beta1 integrin in complex with fibronectin on Gromacs. All input files required to run the simulations are in `./pull_integrinMD/input/`. The energy minimization, NVT, NPT, and steered MD simulations should NOT be run locally. We used Stampede2 at Texas Advanced Computing Center through allocation MCB100146 from Advanced Cyberinfrastructure Coordination Ecosystem: Services and Support (ACCESS) super-computing facilities. Results can be > 1 GB for each steered MD run.
 
 Downloading Gromacs
 ===========
-This implementation was run in Ubuntu 20.04. The molecular dynamics software used was Gromacs 2020.4, which can be downloaded from https://ftp.gromacs.org/pub/gromacs-2020.4.tar.gz and is also available in the ./pull_integrinMD. The source code can be downloaded from https://manual.gromacs/org/2020.4/download.html. The tarball can be unpacked using:
+This implementation was run in Ubuntu 20.04. The molecular dynamics software used was Gromacs 2020.4, which can be downloaded from https://ftp.gromacs.org/pub/gromacs-2020.4.tar.gz and is also available in the `./pull_integrinMD.` The source code can be downloaded from https://manual.gromacs/org/2020.4/download.html. The tarball can be unpacked using:
 ```
 $> tar -xvzf gromacs-2020.4.tar.gz
 ```
@@ -13,7 +15,7 @@ $> clang –version
 ```
 to check if Clang is already installed. If not, it can be installed by following the instructions here: https://www.ics.uci.edu/~pattis/common/handouts/macclion/clang.html. Next, download cmake from https://cmake.org/download/. 
 
-First, we will move the gromacs-2020.4 folder from its current location to the folder where our programs are kept. For my PC, this folder is "C:/Program Files." For MacOS, this will be the Applications folder. Next, we’re going to open up the terminal and navigate to the folder containing gromacs-2020.4. Now we can follow the "Quick and dirty installation" steps from the GROMACS website:
+First, we will move the gromacs-2020.4 folder from its current location to the folder where our programs are kept. For my PC, this folder is `C:/Program Files`. For MacOS, this will be the Applications folder. Next, we’re going to open up the terminal and navigate to the folder containing gromacs-2020.4. Now we can follow the "Quick and dirty installation" steps from the GROMACS website:
 ```
 $> cd gromacs-2020.4
 $> mkdir build
@@ -27,9 +29,9 @@ $> source /usr/local/gromacs/bin/GMXRC
 Setting up the simulation
 ==========
 
-All input files required to run the simulations are in ./pull_integrinMD/input/
+Reminder: all input files required to run the simulations are in `./pull_integrinMD/input/`
 
-Starting from scratch, download 7NWL.pdb from https://www.rcsb.org/structure/7NWL and remove the TS2/16 Fv-clasp in PYMOL, VMD, or manually. The file ./pull_integrinMD/input/7NWL_abc has the clasp removed already. Convert the pdb file to a gro file:
+Starting from scratch, download `7NWL.pdb` from https://www.rcsb.org/structure/7NWL and remove the TS2/16 Fv-clasp in PYMOL, VMD, or manually. The file `./pull_integrinMD/input/7NWL_abc.pdb` has the clasp removed already. Convert the pdb file to a gro file:
 ```
 $> gmx pdb2gmx -f 7NWL_abc.pdb -o 7NWL_abc.gro
 ```
