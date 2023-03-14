@@ -119,7 +119,7 @@ Running the steered MD. Replace :
 $> gmx grompp -f pull.mdp -c npt.gro -p topol.top -r npt.gro -n index.ndx -t npt.cpt -o pull.tpr
 $> gmx mdrun -deffnm pull -s pull.tpr -pf pullf.xvg -px pullx.xvg
 ```
-Post-processing:
+Post-processing
 ===============
 
 After running the simulations, we can extract the COM coordinates of the pull groups to calculate extension:
@@ -131,3 +131,7 @@ Select the three pull groups defined earlier (int_a, int_b, and fn) to complete 
 $> gmx trjconv -f sim-name.xtc -s sim-name.tpr -o new-traj.xtc
 ```
 Then selecting option 1 to select the protein. We can then use VMD to load npt.gro and sim-name.xtc and create movies.
+
+Force Distribution Analysis
+==============
+To run the force distribution analysis, we used the input file found in `./pull_integrinMD/input/input.pfi`, the steered MD trajectory of choice, and gromacs-fda from: https://github.com/HITS-MBM/gromacs-fda. 
